@@ -36,6 +36,10 @@ class Sortie
     #[ORM\JoinColumn(nullable: false)]
     private ?Campus $siteOrganisateur = null;
 
+    #[ORM\ManyToOne(inversedBy: 'sorties')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Etat $etats = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +125,18 @@ class Sortie
     public function setSiteOrganisateur(?Campus $siteOrganisateur): static
     {
         $this->siteOrganisateur = $siteOrganisateur;
+
+        return $this;
+    }
+
+    public function getEtats(): ?Etat
+    {
+        return $this->etats;
+    }
+
+    public function setEtats(?Etat $etats): static
+    {
+        $this->etats = $etats;
 
         return $this;
     }
