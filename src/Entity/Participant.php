@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -48,6 +50,18 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'participants')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Campus $campus = null;
+
+    #[ORM\ManyToMany(targetEntity: Sortie::class, mappedBy: 'estInscrit')]
+    private Collection $sorties;
+
+    #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Sortie::class)]
+    private Collection $organisateurSorties;
+
+    public function __construct()
+    {
+        $this->sorties = new ArrayCollection();
+        $this->organisateurSorties = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -199,6 +213,63 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCampus(?Campus $campus): static
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getSorties(): Collection
+    {
+        return $this->sorties;
+    }
+
+    public function addSorty(Sortie $sorty): static
+    {
+        if (!$this->sorties->contains($sorty)) {
+            $this->sorties->add($sorty);
+            $sorty->addEstInscrit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSorty(Sortie $sorty): static
+    {
+        if ($this->sorties->removeElement($sorty)) {
+            $sorty->removeEstInscrit($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getOrganisateurSorties(): Collection
+    {
+        return $this->organisateurSorties;
+    }
+
+    public function addOrganisateurSorty(Sortie $organisateurSorty): static
+    {
+        if (!$this->organisateurSorties->contains($organisateurSorty)) {
+            $this->organisateurSorties->add($organisateurSorty);
+            $organisateurSorty->setOrganisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganisateurSorty(Sortie $organisateurSorty): static
+    {
+        if ($this->organisateurSorties->removeElement($organisateurSorty)) {
+            // set the owning side to null (unless already changed)
+            if ($organisateurSorty->getOrganisateur() === $this) {
+                $organisateurSorty->setOrganisateur(null);
+            }
+        }
 
         return $this;
     }
