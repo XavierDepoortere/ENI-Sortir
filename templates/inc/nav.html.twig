@@ -21,10 +21,7 @@
 
 
 
-<!-- Erreur lors du logout car il reste sur la page d'accueil et il a besoin des resources de l'user connecté pour afficher la ligne 29
-pour resoudre le probleme il faut rediriger vers la page /login lors de la déco, à faire avec les roles
-(possible sans toucher à la BDD. Indice 1 : PUBLIC_ACCESS est un role implicite que n'importe quel visiteur possède;
-  Indice 2 : ROLE_USER est attribué d'office aux utilisateurs connectés ) à faire si tu le souhaite si trop easy laisse pour Antoine si pas besion pour avancer -->
+
 
               <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-semibold text-l pb-1">{{ app.user.prenom|slice(0, 1) }}{{ app.user.nom|slice(0, 1) }}</div>
               <!--<img class="h-10 w-10 rounded-full" 
