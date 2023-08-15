@@ -18,10 +18,11 @@
         {% endblock %}
 </head>
 <body>
-<header>
-
-
+{% if app.request.attributes.get('_route') != 'app_login'%}
+    <header>
+        {% include("inc/nav.html.twig") %}
     </header>
+{% endif %}
     <main>
     {% block body %}
     
