@@ -17,7 +17,7 @@ class Etat
     private ?int $id = null;
 
     #[Assert\NotBlank(message: "Merci de renseigner le libellé de l'état !")]
-    #[ORM\Column(length: 50, unique: true)]
+    #[ORM\Column(length: 180, unique: true)]
     private ?string $libelle = null;
 
     #[ORM\OneToMany(mappedBy: 'etats', targetEntity: Sortie::class)]

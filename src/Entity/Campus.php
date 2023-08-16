@@ -17,7 +17,7 @@ class Campus
     private ?int $id = null;
 
     #[Assert\NotBlank(message: "Merci de renseigner le nom du Campus !")]
-    #[ORM\Column(length: 50, unique: true)]
+    #[ORM\Column(length: 180, unique: true)]
     private ?string $nom = null;
 
     #[ORM\OneToMany(mappedBy: 'campus', targetEntity: Participant::class)]
