@@ -1,0 +1,50 @@
+<nav class="border-b border-gray-900/10">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="relative flex h-16 items-center justify-between">
+      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+        <div class="flex flex-shrink-0 items-center">
+          <img class="h-8 w-auto" src="{{ asset('img/logo.svg') }}" alt="Sortir">
+        </div>
+          <div class="flex hidden sm:ml-6 sm:block">
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Villes</a>
+              <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Campus</a>
+              <a href="{{ path('app_main')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Accueil</a>
+            </div>     
+        </div>
+      </div>
+      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+        </button>
+        <div class="relative ml-3">
+          <div>
+            <button type="button"  id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+
+
+
+
+
+              <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-semibold text-l pb-1">{{ app.user.prenom|slice(0, 1) }}{{ app.user.nom|slice(0, 1) }}</div>
+              <!--<img class="h-10 w-10 rounded-full" 
+              src="" alt="">-->
+            </button>
+          </div>
+          <div class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"  id="user-menu">
+            <!-- Active: "bg-gray-100", Not Active: "" -->
+            <span class="block px-4 py-2 text-sm text-gray-700">{{ app.user.prenom|capitalize}} {{ app.user.nom|slice(0, 1)|upper }}</span>
+            <span class="block px-4 py-2 text-sm text-gray-700">{{"now" | date("d/m/Y")}}</span>
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Mon profil</a>
+            <a href="{{ path('app_logout')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Se déconnecter</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</nav>
+<script>
+const userMenuButton = document.getElementById("user-menu-button");
+const userMenu = document.getElementById("user-menu");
+userMenuButton.addEventListener("click", () => {
+  userMenu.classList.toggle("hidden");
+});
+</script>
