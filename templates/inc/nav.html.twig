@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-        </button>
+
         <div class="relative ml-3">
           <div>
             <button type="button"  id="user-menu-button" aria-expanded="false" aria-haspopup="true">
@@ -23,7 +23,7 @@
 
 
 
-              <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-semibold text-l pb-1">{{ app.user.prenom|slice(0, 1) }}{{ app.user.nom|slice(0, 1) }}</div>
+              <span class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-semibold text-l pb-1">{{ app.user.prenom|slice(0, 1) }}{{ app.user.nom|slice(0, 1) }}</span>
               <!--<img class="h-10 w-10 rounded-full" 
               src="" alt="">-->
             </button>
@@ -39,7 +39,7 @@
       </div>
     </div>
   </div>
-  </div>
+
 </nav>
 <script>
 const userMenuButton = document.getElementById("user-menu-button");
