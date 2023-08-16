@@ -32,7 +32,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 10; $i++) { // Générer 10 participants avec des campus aléatoires
             $participant = new Participant();
 
-            $participant->setRoles(['ROLE_USER']);
+           
 
             $participant->setNom($faker->lastName);
             $participant->setPrenom($faker->firstName);
