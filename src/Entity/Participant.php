@@ -20,7 +20,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    private ?array $roles =[];
+    
 
     /**
      * @var string The hashed password
@@ -93,24 +93,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
-{
-    $roles = $this->roles;
-
-    if($this->administrateur){
-        $roles[] = 'ROLE_ADMIN';
-    }
-
-    $roles[] = 'ROLE_USER';
-
-    return array_unique($roles);
-}
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
+    
 
     /**
      * @see PasswordAuthenticatedUserInterface
