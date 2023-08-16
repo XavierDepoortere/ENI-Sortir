@@ -41,7 +41,8 @@ class AppFixtures extends Fixture
             //$participant->setTelephone($faker->phoneNumber);
             $participant->setAdministrateur($faker->boolean);
             $participant->setActif($faker->boolean);
-            $participant->setPassword($this->passwordHasher->hashPassword($participant, 'password'));
+
+            $participant->setMotPasse($this->passwordHasher->hashPassword($participant, 'password'));
             $randomCampusId = $faker->randomElement($campusIds);
 
             // Obtenez l'entité Campus à partir de l'ID

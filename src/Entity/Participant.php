@@ -26,8 +26,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
-    private ?string $password = null;
+    #[ORM\Column(length: 255)]
+    private ?string $motPasse = null;
 
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
@@ -57,8 +57,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Sortie::class)]
     private Collection $organisateurSorties;
 
-    #[ORM\Column(length: 255)]
-    private ?string $motPasse = null;
 
     public function __construct()
     {
@@ -117,12 +115,12 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return $this->password;
+        return $this->motPasse;
     }
 
     public function setPassword(string $password): static
     {
-        $this->password = $password;
+        $this->motPasse = $password;
 
         return $this;
     }
