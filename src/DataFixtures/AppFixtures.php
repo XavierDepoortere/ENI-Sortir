@@ -13,48 +13,6 @@ use Faker;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
-<<<<<<< HEAD
-class AppFixtures extends Fixture {
-
-private $passwordHasher;
-public function __construct(UserPasswordHasherInterface $passwordHasher) {
-$this->passwordHasher = $passwordHasher;
-
-}
-
-public function load(ObjectManager $manager): void
-{
-$faker = Faker\Factory::create('fr_FR');
-
-
-$campusIds = [1, 2, 3];
-
-for ($i = 0; $i < 10; $i++) { // Générer 10 participants avec des campus aléatoires
-$participant = new Participant();
-
-$participant->setNom($faker->lastName);
-$participant->setPrenom($faker->firstName);
-$participant->setPseudo($faker->lastName);
-$participant->setEmail($faker->email);
-//$participant->setTelephone($faker->phoneNumber);
-$participant->setAdministrateur($faker->boolean);
-$participant->setActif($faker->boolean);
-$participant->setPassword($this->passwordHasher->hashPassword($participant, 'password'));
-$randomCampusId = $faker->randomElement($campusIds);
-
-// Obtenez l'entité Campus à partir de l'ID
-$campus = $manager->getRepository(Campus::class)->find($randomCampusId);
-
-if ($campus) {
-$participant->setCampus($campus);
-$manager->persist($participant);
-}
-}
-
-$manager->flush();
-}
-}
-=======
 class AppFixtures extends Fixture
 {
 
@@ -98,4 +56,3 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 }
->>>>>>> 8b320d5bab15dda1d32ad8c1a31eb0968eca822d
