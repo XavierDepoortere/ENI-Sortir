@@ -32,7 +32,7 @@
             <!-- Active: "bg-gray-100", Not Active: "" -->
             <span class="block px-4 py-2 text-sm text-gray-700">{{ app.user.prenom|capitalize}} {{ app.user.nom|slice(0, 1)|upper }}</span>
             <span class="block px-4 py-2 text-sm text-gray-700">{{"now" | date("d/m/Y")}}</span>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Mon profil</a>
+            <a href="{{ path('app_profil', { 'id':app.user.id }) }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Mon profil</a>
             <a href="{{ path('app_logout')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Se déconnecter</a>
           </div>
         </div>
