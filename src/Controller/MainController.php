@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Participant;
+
 use App\Repository\ParticipantRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
