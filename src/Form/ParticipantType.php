@@ -31,7 +31,6 @@ class ParticipantType extends AbstractType
             'type' => PasswordType::class,
             'required' => false,
             'mapped' => false,
-            
             'options' => ['attr' => ['class' => 'password-field']],
             'first_options'  => ['label' => 'Password'],
             'second_options' => ['label' => 'Repeat Password'],
