@@ -18,11 +18,7 @@ class ParticipantController extends AbstractController
     #[Route('/profil/{id}', name: 'app_profil')]
     public function edit(Participant $participant, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-        // Vérification de l'autorisation
-        if ($this->getUser() !== $participant) {
-            return $this->redirectToRoute('app_main');
-        }
-
+        //TODO CODE POUR FAIRE EN SORT QUE SI ON INDIQUE UN ID INCONNU DANS LA BDD ON ARRIVE SUR UNE 404
         $form = $this->createForm(ParticipantType::class, $participant);
 
         $originalPassword = $participant->getPassword();
@@ -50,7 +46,7 @@ class ParticipantController extends AbstractController
         }
 
         return $this->render('participant/profil.html.twig', [
-            'participantForm' => $form->createView(),
+            'participantForm' => $form->createView(),'participant' => $participant,
         ]);
     }
 }
