@@ -21,11 +21,13 @@ class SortieController extends AbstractController
         $sortieForm = $this->createForm(SortieType::class, $sortie);
 
         $sortieForm->handleRequest($request);
-
-        $entityManager->persist($sortie);
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+            $entityManager->persist($sortie);
 
         $entityManager->flush();
-
+        }
+        
+        
 
 
 
