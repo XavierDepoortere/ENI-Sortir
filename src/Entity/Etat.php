@@ -16,7 +16,8 @@ class Etat
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank(message: "Merci de renseigner le libellé de l'état !")]
+    #[Assert\NotBlank(message: "Le libellé de l'état ne peut pas être vide")]
+    #[Assert\Length(min:2, max : 180)]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $libelle = null;
 

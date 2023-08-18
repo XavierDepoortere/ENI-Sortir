@@ -17,24 +17,37 @@ class Sortie
     #[ORM\Column]
     private ?int $id = null;
 
+
+    #[Assert\NotBlank(message: "Le nom de la sortie ne peut pas être vide")]
+    #[Assert\Length(min: 3, max: 50)]
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank()]
     private ?string $nom = null;
 
+    #[Assert\NotNull(message: "La date et l'heure de la sortie doivent être renseignées")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
+    #[Assert\NotNull(message: "La durée de la sortie ne peut pas être nulle")]
+    #[Assert\Positive(message: "La durée doit être un nombre positif (en minutes)")]
     #[ORM\Column]
     private ?int $duree = null;
 
+
+    #[Assert\NotNull(message: "La date limite d'inscription doit être renseignée")]
+    #[Assert\LessThanOrEqual(propertyPath:"dateHeureDebut", message : "La date limite d'inscription doit être antérieure ou égale à la date de sortie")]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
+    #[Assert\NotNull(message: "Le nombre de participants ne peut pas être nul")]
+    #[Assert\Positive(message: "Le nombre de participants doit être supérieur à zéro")]
     #[ORM\Column]
     private ?int $nbInscriptionsMax = null;
 
+    #[Assert\Length(max: 500)]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $infosSortie = null;
+
+
 
     #[ORM\ManyToOne(inversedBy: 'sorties')]
     #[ORM\JoinColumn(nullable: false)]

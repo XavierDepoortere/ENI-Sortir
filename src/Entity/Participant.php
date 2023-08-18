@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
@@ -17,6 +18,9 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    //Email non vide / avec format type nom d'utilisateur + @ + nom de domaine + extension / Unique + longueur 180 (lié à l'unicité)
+    #[Assert\NotBlank(message : "L'adresse Email ne peut pas être vide")]
+    #[Assert\Email(mode: 'strict', message: "L'adresse Email n'est pas valide (ex : exemple@domaine.com)")]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -25,18 +29,29 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
+
+    // #[Assert\PasswordStrength(minStrength: 'medium', message: "Le mot de passe doit être plus complexe.")] ==> pas intégré pour ne pas avoir de soucis avec le mot de passe actuel
+    #[Assert\NotBlank(message : "Le Password ne peut pas être vide")]
+    #[Assert\Length(min: 5, max: 255)]
     #[ORM\Column(length: 255)]
     private ?string $motPasse = null;
 
+    #[Assert\NotBlank(message : "Le Nom ne peut pas être vide")]
+    #[Assert\Length(min: 3, max: 50)]
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
+    #[Assert\NotBlank(message : "Le Prénom ne peut pas être vide")]
+    #[Assert\Length(min:3, max: 50)]
     #[ORM\Column(length: 50)]
     private ?string $prenom = null;
 
+    #[Assert\NotBlank(message : "Le Pseudo ne peut pas être vide")]
+    #[Assert\Length(min:3, max: 50)]
     #[ORM\Column(length: 50)]
     private ?string $pseudo = null;
 
+    #[Assert\Length(min: 10, max: 14)]
     #[ORM\Column(length: 14, nullable: true)]
     private ?string $telephone = null;
 

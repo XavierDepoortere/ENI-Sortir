@@ -16,7 +16,8 @@ class Campus
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank(message: "Merci de renseigner le nom du Campus !")]
+    #[Assert\NotBlank(message: "Le nom de campus ne peut pas être vide")]
+    #[Assert\Length(min: 4, max : 180)]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $nom = null;
 

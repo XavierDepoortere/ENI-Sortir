@@ -16,19 +16,23 @@ class Lieu
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank(message: "Le nom du lieu ne peut pas être vide !")]
-    // #[Assert\Length(max(50))]
+    #[Assert\NotBlank(message: "Le nom du lieu ne peut pas être vide")]
+    #[Assert\Length(min : 4, max: 50)]
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
-    #[Assert\NotBlank(message: "Merci de renseigner le nom de la rue !")]
+
+    #[Assert\NotBlank(message: "Le nom de la rue ne peut pas être vide")]
+    #[Assert\Length(min : 4, max: 100)]
     #[ORM\Column(length: 100)]
     private ?string $rue = null;
 
-    #[ORM\Column]
+    #[Assert\Regex(pattern:"/^\d{3}\.\d{6}$/", message:"La latitude doit avoir 3 chiffres avant la virgule et 6 chiffres après")]
+    #[ORM\Column (nullable:true)] 
     private ?float $latitude = null;
 
-    #[ORM\Column]
+    #[Assert\Regex(pattern:"/^\d{3}\.\d{6}$/", message:"La longitude doit avoir 3 chiffres avant la virgule et 6 chiffres après")]
+    #[ORM\Column (nullable:true)]
     private ?float $longitude = null;
 
     #[ORM\ManyToOne(inversedBy: 'lieux')]
