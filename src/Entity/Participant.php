@@ -48,7 +48,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank(message : "Le Pseudo ne peut pas être vide")]
     #[Assert\Length(min:3, max: 50)]
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
     private ?string $pseudo = null;
 
     #[Assert\Length(min: 10, max: 14)]
