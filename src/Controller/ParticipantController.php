@@ -20,7 +20,6 @@ class ParticipantController extends AbstractController
     {
         //TODO CODE POUR FAIRE EN SORT QUE SI ON INDIQUE UN ID INCONNU DANS LA BDD ON ARRIVE SUR UNE 404
         $form = $this->createForm(ParticipantType::class, $participant);
-        $originalPassword = $participant->getPassword();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupérer le champ de mot de passe depuis le formulaire
@@ -30,12 +29,8 @@ class ParticipantController extends AbstractController
                 $plainPassword = $motPasseField->getData();
                 $hashedPassword = $passwordHasher->hashPassword($participant, $plainPassword);
                 $participant->setPassword($hashedPassword);
-            } else {
-                // Si le champ n'a pas été modifié, restaurer le mot de passe original
-                $participant->setPassword($originalPassword);
-            }
+            } 
             // Enregistrer les modifications
-            $entityManager->persist($participant);
             $entityManager->flush();
             return $this->redirectToRoute('app_main');
         }
