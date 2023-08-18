@@ -248,7 +248,7 @@
                     {{ sortie.etats.libelle }}
                 </td>
                 <td class="px-6 py-4">
-                    <a href="{{ path('app_profil', { 'id':sortie.organisateur.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ sortie.organisateur.prenom|capitalize }}.{{ sortie.organisateur.nom|slice(0, 1)|upper }}</a>
+                    <a href="{{ path('app_profil_view', { 'id':sortie.organisateur.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ sortie.organisateur.prenom|capitalize }}.{{ sortie.organisateur.nom|slice(0, 1)|upper }}</a>
                 </td>
             </tr>
             
