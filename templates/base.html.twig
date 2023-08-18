@@ -18,7 +18,8 @@
         {% endblock %}
 </head>
 <body>
-{% if app.request.attributes.get('_route') != 'app_login'%}
+{% if app.request.attributes.get('_route') not in ['app_login' , 'app_erreur']%}
+
     <header>
         {% include("inc/nav.html.twig") %}
     </header>

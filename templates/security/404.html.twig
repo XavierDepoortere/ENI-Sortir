@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<main class="grid min-h-screen place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div class="text-center">
+        <h1 class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Oups! Page not found</h1>
+        <div class="mt-10 flex flex-col items-center">
+            <img src="{{ asset('img/error404.png') }}" alt="Error 404" class="max-w-full h-auto w-auto mb-6 mx-auto">
+            <div class="flex items-center gap-x-6">
+                <a href="{{ path('app_main') }}" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Retour à l'Accueil</a>
+                <a href="{{ path('app_login') }}" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Retour à la page de connexion</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
+
