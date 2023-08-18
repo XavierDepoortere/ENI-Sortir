@@ -19,7 +19,7 @@ class ParticipantController extends AbstractController
     public function edit(?Participant $participant, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {   //TODO TEST SI PARTICIPANT = 0 redirect to login  + add flash message ( ce participant  )
         //TODO CODE POUR FAIRE EN SORT QUE SI ON INDIQUE UN ID INCONNU DANS LA BDD ON ARRIVE SUR UNE 404
-        //TODO TEST POUR NUMERIQUE OBLIGATOIRE PPOUR L'ID DU PARTICIPANT
+        //TODO TEST POUR NUMERIQUE OBLIGATOIRE POUR L'ID DU PARTICIPANT
         //TODO faire un deuxieme template pour affichage d'un et ou de monprofil
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
