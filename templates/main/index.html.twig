@@ -210,39 +210,45 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0">
             <tr>
                 <th scope="col" class="px-6 py-3">
-                    Nom
+                    Nom de la sortie
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Prénom
+                    Date de la sortie
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Email
+                    Clôture
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Pseudo
+                    Inscrits/Places
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Edit
+                    Etat
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Organisateur
                 </th>
             </tr>
         </thead>
         <tbody>
-{% for participant in liste_twig %}
+{% for sortie in liste_sorties %}
             <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 ">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ participant.nom }}
+                    {{ sortie.nom }}
                 </th>
                 <td class="px-6 py-4">
-                   {{ participant.prenom }}
+                   {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}
                 </td>
                 <td class="px-6 py-4">
-                    {{ participant.email }}
+                    {{ sortie.dateLimiteInscription|date('d/m/Y') }}
                 </td>
                 <td class="px-6 py-4">
-                    {{ participant.pseudo }}
+                    0/{{ sortie.nbInscriptionsMax }}
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                    {{ sortie.etats.libelle }}
+                </td>
+                <td class="px-6 py-4">
+                    <a href="{{ path('app_profil', { 'id':sortie.organisateur.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ sortie.organisateur.prenom|capitalize }}.{{ sortie.organisateur.nom|slice(0, 1)|upper }}</a>
                 </td>
             </tr>
             
