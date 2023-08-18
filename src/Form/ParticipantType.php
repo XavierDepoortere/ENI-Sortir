@@ -33,11 +33,11 @@ class ParticipantType extends AbstractType
             'required' => true, 
             'mapped' => false,
         ])
-        ->add('password', RepeatedType::class, [
+        ->add('motPasse', RepeatedType::class, [
             'type' => PasswordType::class,
             'required' => false,
             'mapped' => false,
-            'options' => ['attr' => ['class' => 'password-field']],
+            'options' => ['attr' => ['class' => 'motPasse-field']],
             'first_options'  => ['label' => 'Password'],
             'second_options' => ['label' => 'Repeat Password'],
         ]);

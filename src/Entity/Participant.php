@@ -135,9 +135,9 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->motPasse;
     }
 
-    public function setPassword(?string $password): static
+    public function setMotPasse(?string $motPasse): static
     {
-        $this->motPasse = $password;
+        $this->motPasse = $motPasse;
 
         return $this;
     }
@@ -288,18 +288,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
                 $organisateurSorty->setOrganisateur(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getMotPasse(): ?string
-    {
-        return $this->motPasse;
-    }
-
-    public function setMotPasse(string $motPasse): static
-    {
-        $this->motPasse = $motPasse;
 
         return $this;
     }
