@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Ville;
 
 #[ORM\Entity(repositoryClass: LieuRepository::class)]
 class Lieu
@@ -105,9 +106,9 @@ class Lieu
         return $this->ville;
     }
 
-    public function setVilles(?Ville $villes): static
+    public function setVilles(?Ville $ville): static
     {
-        $this->ville = $villes;
+        $this->ville = $ville;
 
         return $this;
     }
