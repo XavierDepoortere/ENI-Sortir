@@ -45,4 +45,13 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * recupere les sorties en lien avec une recherche
+     * @return Sortie[]
+     */
+    public function findSearch(): array
+    {
+        return $this->findAll();
+    }
 }
