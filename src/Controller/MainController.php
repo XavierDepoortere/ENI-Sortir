@@ -19,18 +19,14 @@ class MainController extends AbstractController
     #[Route('/', name: 'app_main')]
     public function index(Request $request, SortieRepository $repo,EntityManagerInterface $entityManager): Response
     {
-       $data = new SearchData();
-       $form = $this->createForm(SearchData::class, $data);
-
-
+    
         //à mettre si besoin
         //$form->handleRequest($request);
 
-        $listeSorties = $repo->findSearch();
+        $listeSorties = $repo->findAll();
 
         return $this->render('main/index.html.twig', [
             'listeSorties' => $listeSorties,
-            'form' => $form->createView()
         ]);
     }
     #[Route('/erreur_404', name: 'app_erreur')]
