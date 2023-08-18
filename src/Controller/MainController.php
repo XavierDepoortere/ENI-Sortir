@@ -26,6 +26,11 @@ class MainController extends AbstractController
             'controller_name' => 'MainController','liste_sorties' => $listeSorties,'infoList' => $infoList,
         ]);
     }
-    
+    #[Route('/erreur_404', name: 'app_erreur')]
+
+    public function erreur()
+    {
+        return $this->render('security/404.html.twig');
+    }
 
 }
