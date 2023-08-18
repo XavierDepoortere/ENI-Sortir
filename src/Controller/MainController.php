@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Data\SearchData;
 use App\Entity\Campus;
 use Doctrine\ORM\EntityManager;
 use App\Repository\SortieRepository;
@@ -16,14 +17,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MainController extends AbstractController
 {
     #[Route('/', name: 'app_main')]
-    public function index(SortieRepository $repo,EntityManagerInterface $entityManager): Response
+    public function index(Request $request, SortieRepository $repo,EntityManagerInterface $entityManager): Response
     {
-        $infoList = $entityManager->getRepository(Campus::class)->findAll();
+       $data = new SearchData();
+       $form = $this->createForm(SearchData::class, $data);
 
-        $listeSorties = $repo->findAll();
+
+        //à mettre si besoin
+        //$form->handleRequest($request);
+
+        $listeSorties = $repo->findSearch();
 
         return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController','liste_sorties' => $listeSorties,'infoList' => $infoList,
+            'listeSorties' => $listeSorties,
+            'form' => $form->createView()
         ]);
     }
     #[Route('/erreur_404', name: 'app_erreur')]
