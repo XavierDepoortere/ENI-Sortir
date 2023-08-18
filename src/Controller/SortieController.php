@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
+use App\Form\LieuType;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +29,8 @@ class SortieController extends AbstractController
 
         $entityManager->flush();
         }
+
+
         
         
 
@@ -35,4 +40,48 @@ class SortieController extends AbstractController
             'sortieForm' => $sortieForm->createView(),
         ]);
     }
+
+    #[Route('/lieu/create', name: 'app_lieu_create')]
+    public function createlieu(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $lieu = new Lieu();
+
+        $lieuForm = $this->createForm(LieuType::class, $lieu);
+        $lieuForm->handleRequest($request);
+
+        if ($lieuForm->isSubmitted() &&$lieuForm->isValid())
+        {
+            $entityManager->persist($lieu);
+            $entityManager->flush();
+        }
+        return $this->render('lieu/create.html.twig', [
+            'lieuForm' => $lieuForm->createView(),
+        ]);
+    }
+
+    #[Route('/lieu/create', name: 'app_ville_create')]
+    public function createville(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $ville = new Ville();
+
+        $villeForm = $this->createForm(Ville::class, $ville);
+
+        $villeForm->handleRequest($request);
+
+        if ($villeForm->isSubmitted() && $villeForm->isValid())
+        {
+            $entityManager->persist($ville);
+            $entityManager->flush();
+        }
+
+
+
+        return $this->render('ville/create.html.twig', [
+            'villeForm' => 'VilleController',
+        ]);
+    }
+
+
+
 }
+
