@@ -20,14 +20,11 @@ class ParticipantController extends AbstractController
     {
         //TODO CODE POUR FAIRE EN SORT QUE SI ON INDIQUE UN ID INCONNU DANS LA BDD ON ARRIVE SUR UNE 404
         $form = $this->createForm(ParticipantType::class, $participant);
-
         $originalPassword = $participant->getPassword();
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupérer le champ de mot de passe depuis le formulaire
             $motPasseField = $form->get('motPasse');
-
             // Vérifier si le champ a été modifié et n'est pas vide
             if ($motPasseField->isSubmitted() && !$motPasseField->isEmpty() && !$motPasseField->isDisabled()) {
                 $plainPassword = $motPasseField->getData();
@@ -37,14 +34,11 @@ class ParticipantController extends AbstractController
                 // Si le champ n'a pas été modifié, restaurer le mot de passe original
                 $participant->setPassword($originalPassword);
             }
-
             // Enregistrer les modifications
             $entityManager->persist($participant);
             $entityManager->flush();
-
             return $this->redirectToRoute('app_main');
         }
-
         return $this->render('participant/profil.html.twig', [
             'participantForm' => $form->createView(),'participant' => $participant,
         ]);
