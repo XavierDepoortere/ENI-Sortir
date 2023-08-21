@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Data\SearchData;
+use App\Entity\Participant;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+
 
 /**
  * @extends ServiceEntityRepository<Sortie>
@@ -16,9 +19,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SortieRepository extends ServiceEntityRepository
 {
+    private $securityHelper;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sortie::class);
+        
     }
 
 //    /**
@@ -50,8 +55,90 @@ class SortieRepository extends ServiceEntityRepository
      * recupere les sorties en lien avec une recherche
      * @return Sortie[]
      */
-    public function findSearch(): array
+    public function findSearch(SearchData $search): array
     {
-        return $this->findAll();
+
+        
+        
+        $query = $this->createQueryBuilder('s')
+        ->select('c','s')
+        ->join('s.siteOrganisateur', 'c');
+        
+
+        if(!empty($search->q)) {
+            $query = $query
+            ->andWhere('s.nom LIKE :q')
+            ->setParameter('q', "%{$search->q}%");
+        }
+        if(!empty($search->siteOrganisateur)) {
+            $query = $query
+            ->andWhere('c IN (:siteOrganisateur)')
+            ->setParameter('siteOrganisateur', $search->siteOrganisateur);
+        }
+
+        if(!empty($search->dateMin)){
+            $query = $query
+            ->andWhere('s.dateHeureDebut >= :dateMin')
+            ->setParameter('dateMin', $search->dateMin);
+        }
+        if(!empty($search->dateMax)){
+            $query = $query
+            ->andWhere('s.dateHeureDebut <= :dateMax')
+            ->setParameter('dateMax', $search->dateMax);
+        }
+        
+        
+        if ($search->inscrit && $search->organisateur && $search->nonInscrit) {
+            $query = $query
+                ->leftJoin('s.estInscrit', 'i')
+                ->leftJoin('s.organisateur', 'o')
+                ->andWhere('i.id IN (:user) OR o.id IN (:user) OR s NOT IN (SELECT s2 
+                FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
+                ->setParameter('user', $search->user);
+                
+        }elseif ($search->organisateur && $search->nonInscrit) {
+            $query = $query
+                ->leftJoin('s.estInscrit', 'i')
+                ->leftJoin('s.organisateur', 'o')
+                ->andWhere('o.id IN (:user) OR s NOT IN (SELECT s2 
+                FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
+                ->setParameter('user', $search->user);
+                
+        }elseif ($search->inscrit && $search->nonInscrit) {
+            $query = $query
+                ->leftJoin('s.estInscrit', 'i')
+                ->andWhere('i.id IN (:user) OR s NOT IN (SELECT s2 
+                FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
+                ->setParameter('user', $search->user);
+                
+        }elseif ($search->inscrit && $search->organisateur) {
+            $query = $query
+                ->leftJoin('s.estInscrit', 'i')
+                ->leftJoin('s.organisateur', 'o')
+                ->andWhere('i.id IN (:user) OR o.id IN (:user)')
+                ->setParameter('user', $search->user);
+                
+        } elseif ($search->inscrit) {
+            $query = $query
+                ->leftJoin('s.estInscrit', 'i')
+                ->andWhere('i.id IN (:user)')
+                ->setParameter('user', $search->user);
+        } elseif ($search->organisateur) {
+            $query = $query
+                ->leftJoin('s.organisateur', 'o')
+                ->andWhere('o.id IN (:user)')
+                ->setParameter('user', $search->user);
+        }elseif ($search->nonInscrit) {
+            $query = $query
+                ->andWhere('s NOT IN (SELECT s2 FROM App\Entity\Sortie s2 JOIN s2.estInscrit i WHERE i = :user)')
+                ->setParameter('user', $search->user);
+        }
+        if ($search->sortiePassee) {
+            $query = $query
+            ->andWhere('s.dateHeureDebut < :currentDate')
+            ->setParameter('currentDate', $search->currentDate);
+        }
+    
+        return $query->getQuery()->getResult();
     }
 }

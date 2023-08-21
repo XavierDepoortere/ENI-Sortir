@@ -18,7 +18,7 @@ class ParticipantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $participant = $options['data'];
+       
 
         $builder
         ->add('pseudo')

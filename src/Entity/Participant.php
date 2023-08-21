@@ -279,6 +279,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    
 
     public function removeOrganisateurSorty(Sortie $organisateurSorty): static
     {
@@ -291,4 +292,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+  
 }
