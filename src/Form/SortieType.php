@@ -24,6 +24,7 @@ class SortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $userCampus = $options['userCampus'];
         $builder
             ->add('nom')
             ->add('dateHeureDebut', DateTimeType::class)
@@ -31,22 +32,21 @@ class SortieType extends AbstractType
             ->add('dateLimiteInscription', DateType::class)
             ->add('nbInscriptionsMax', IntegerType::class)
             ->add('infosSortie', TextareaType::class)
-            ->add('siteOrganisateur', TextType::class)
-
-
-            ->add('lieux', LieuType::class)
-
-
-
-
-
-        ;
+            ->add('siteOrganisateur', TextType::class, [
+                'label' => 'Campus',
+                'attr' => ['class' => 'px-2 py-1 border rounded focus:outline-none focus:border-blue-500'],
+                'data' => $userCampus->getNom(),
+                'required' => true, 
+                'disabled'=> 'disabled',
+                
+            ])
+            ->add('lieux', LieuType::class);
     }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
+            'userCampus' => null,
         ]);
     }
 }
