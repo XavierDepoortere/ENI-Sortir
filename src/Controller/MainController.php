@@ -44,7 +44,7 @@ class MainController extends AbstractController
 
         return $this->render('main/index.html.twig', [
             'listeSorties' => $listeSorties,
-            'form'=> $form->CreateView(),
+            'form' => $form->createView()
         ]);
     }
     #[Route('/erreur_404', name: 'app_erreur')]
