@@ -5,7 +5,8 @@ namespace App\Form;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 
-use phpDocumentor\Reflection\Types\True_;
+use App\Entity\Ville;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -16,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function Sodium\add;
+
 
 
 class SortieType extends AbstractType
@@ -31,10 +32,12 @@ class SortieType extends AbstractType
             ->add('nbInscriptionsMax', IntegerType::class)
             ->add('infosSortie', TextareaType::class)
             ->add('siteOrganisateur', TextType::class)
-            ->add('lieux', EntityType::class, [
-                'class' => Lieu::class,
-                'choice_label' => 'nom'
-            ])
+
+
+            ->add('lieux', LieuType::class)
+
+
+
 
 
         ;

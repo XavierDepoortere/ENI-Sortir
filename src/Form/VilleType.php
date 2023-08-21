@@ -15,6 +15,7 @@ class VilleType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class)
+
             ->add('codePostal', TextType::class, [
                 'constraints' => [
                     new Length([
