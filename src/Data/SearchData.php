@@ -80,7 +80,7 @@ class SearchData
     /**
      * @var bool
      */
-    public bool $inscrit = false;
+    public bool $inscrit = true;
 
     public function isInscrit(): bool
     {
@@ -108,7 +108,7 @@ class SearchData
 /**
      * @var bool
      */
-    public bool $organisateur = false;
+    public bool $organisateur = true;
 
     public function isOrganisateur(): bool
     {
@@ -121,7 +121,7 @@ class SearchData
         return $this;
     }
 
-    public bool $nonInscrit = false;
+    public bool $nonInscrit = true;
     public ?\DateTime $currentDate = null;
     public function __construct()
     {
