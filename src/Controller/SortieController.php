@@ -22,24 +22,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SortieController extends AbstractController
 {
     #[Route('/sortie/create', name: 'app_sortie_create')]
-    public function create(EntityManagerInterface $entityManager, Request $request,SortieRepository $sortieRepository)
+    public function create(EntityManagerInterface $entityManager, Request $request, SortieRepository $sortieRepository)
     {
         $user = $this->getUser();
 
         $sortie = new Sortie();
-      
-        
+
+
         if ($user instanceof Participant) {
-        $userCampus = $user->getCampus();
-        $sortie->setSiteOrganisateur($userCampus);
-        $sortie->setOrganisateur($user);
-        
+            $userCampus = $user->getCampus();
+            $sortie->setSiteOrganisateur($userCampus);
+            $sortie->setOrganisateur($user);
+
         }
         $form = $this->createForm(SortieType::class, $sortie, ['userCampus' => $userCampus]);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            
+        if ($form->isSubmitted() && $form->isValid()) {
+
             if ($form->get('save')->isClicked()) {
                 $etatCreee = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Créée']);
                 $sortie->setEtats($etatCreee);
@@ -72,43 +71,39 @@ class SortieController extends AbstractController
             'ville' => $ville,
 
 
-
-
         ]);
     }
 
     #[Route('/sortie/modifsortie/{id}', name: 'app_sortie_modif')]
-    public function editSortie(EntityManagerInterface $entityManager, Request $request)
-    {
-        $user = $this->getUser();
-        $sortie = $this->getUser();
-
-        $sortie = new Sortie();
 
 
-        if ($user instanceof Participant) {
-            $userCampus = $user->getCampus();
-            $sortie->setSiteOrganisateur($userCampus);
-            $sortie->setOrganisateur($user);
 
-        }
-        $form = $this->createForm(SortieType::class, $sortie, ['userCampus' => $userCampus]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
+        public
+        function edit(Sortie $sortie, EntityManagerInterface $entityManager, Request $request)
         {
 
-            $sortie = $form->getData();
-            $entityManager->persist($sortie);
-            $entityManager->flush();
-            $this->addFlash('success', 'Sortie modifiée ! bien joué!!');
-            return $this->redirectToRoute('app_main');
+
+            $form = $this->createForm(SortieType::class, $sortie);
+
+
+            $form->handleRequest($request);
+
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Sortie mise à jour !');
+
+                return $this->redirectToRoute('app_main');
+            }
+
+            return $this->render('sortie/modifSortie.html.twig',
+
+                ['form' => $form->createView(),
+
+                    'sortie' => $sortie,
+                ]);
+
         }
-        return $this->render('sortie/modifSortie.html.twig', [
-            'form' => $form->createView(),
-            'sortie' => $sortie,
-        ]);
 
     }
-
-
-}
