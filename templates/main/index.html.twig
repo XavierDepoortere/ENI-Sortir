@@ -127,6 +127,9 @@
                     Etat
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    Inscrit
+                </th>
+                <th scope="col" class="px-6 py-3">
                     Organisateur
                 </th>
             </tr>
@@ -148,6 +151,9 @@
                 </td>
                 <td class="px-6 py-4">
                     {{ sortie.etats.libelle }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ app.user in sortie.estInscrit ? 'X' : '' }}
                 </td>
                 <td class="px-6 py-4">
                     <a href="{{ path('app_profil_view', { 'id':sortie.organisateur.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ sortie.organisateur.prenom|capitalize }}.{{ sortie.organisateur.nom|slice(0, 1)|upper }}</a>

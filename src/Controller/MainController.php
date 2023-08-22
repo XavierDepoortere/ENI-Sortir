@@ -19,14 +19,12 @@ class MainController extends AbstractController
     {
         $searchData = new SearchData();
         $user = $this->getUser();
-        if ($user instanceof Participant) {
-            // Récupérer le campus du participant connecté
-            $participantCampus = $user->getCampus();
-            
-            // Passer le campus au formulaire
-            $searchData->setCampus($participantCampus);
+
+
+
+            $searchData->setCampus($user->getCampus());
             $searchData->setUser($user);
-        }
+
         $form = $this->createForm(SearchForm::class, $searchData);
 
         $form->handleRequest($request);
