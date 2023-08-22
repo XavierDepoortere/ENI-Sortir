@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Ville;
 use App\Entity\Sortie;
@@ -23,16 +24,29 @@ class SortieController extends AbstractController
         $user = $this->getUser();
 
         $sortie = new Sortie();
-        $lieu = new Lieu();
+      
+        
         if ($user instanceof Participant) {
         $userCampus = $user->getCampus();
+        $sortie->setSiteOrganisateur($userCampus);
+        $sortie->setOrganisateur($user);
+        
         }
         $form = $this->createForm(SortieType::class, $sortie, ['userCampus' => $userCampus]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
         {
-            $entityManager->persist($sortie,$lieu);
-           
+            
+            if ($form->get('save')->isClicked()) {
+                $etatCreee = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Créée']);
+                $sortie->setEtats($etatCreee);
+            }
+            elseif ($form->get('post')->isClicked()){
+                $etatOuverte = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
+                $sortie->setEtats($etatOuverte);
+            }
+
+            $entityManager->persist($sortie);
             $entityManager->flush();
             $this->addFlash('success', 'Sortie ajoutée ! bien joué!!');
             return $this->redirectToRoute('app_main');
