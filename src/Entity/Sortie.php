@@ -59,7 +59,7 @@ class Sortie
 
     #[ORM\ManyToOne(targetEntity:Lieu::class, inversedBy:"sorties", cascade:['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Lieu $lieux = null;
+    private ?Lieu $lieu = null;
 
     #[ORM\ManyToMany(targetEntity: Participant::class, inversedBy: 'sorties')]
     private Collection $estInscrit;
@@ -174,14 +174,14 @@ class Sortie
         return $this;
     }
 
-    public function getLieux(): ?Lieu
+    public function getLieu(): ?Lieu
     {
-        return $this->lieux;
+        return $this->lieu;
     }
 
-    public function setLieux(?Lieu $lieux): static
+    public function setLieu(?Lieu $lieu): static
     {
-        $this->lieux = $lieux;
+        $this->lieu = $lieu;
 
         return $this;
     }

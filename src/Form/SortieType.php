@@ -44,7 +44,7 @@ class SortieType extends AbstractType
                 'required' => true, 
                 'disabled'=> 'disabled',
             ])
-            ->add('lieux', LieuType::class)
+            ->add('lieu', LieuType::class)
             ->add('save', SubmitType::class, [
                 'label'=> 'Enregistrer',
             ])

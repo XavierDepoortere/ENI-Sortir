@@ -125,7 +125,7 @@ class Lieu
     {
         if (!$this->sorties->contains($sorty)) {
             $this->sorties->add($sorty);
-            $sorty->setLieux($this);
+            $sorty->setLieu($this);
         }
 
         return $this;
@@ -135,8 +135,8 @@ class Lieu
     {
         if ($this->sorties->removeElement($sorty)) {
             // set the owning side to null (unless already changed)
-            if ($sorty->getLieux() === $this) {
-                $sorty->setLieux(null);
+            if ($sorty->getLieu() === $this) {
+                $sorty->setLieu(null);
             }
         }
 

@@ -9,7 +9,10 @@ use App\Entity\Ville;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Entity\Participant;
+use App\Repository\CampusRepository;
+use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,4 +58,57 @@ class SortieController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/sortie/detail/{id}', name: 'app_sortie_detail')]
+    public function detailSortie(Sortie $sortie): Response
+    {
+
+        $lieu = $sortie->getLieu();
+        $ville = $lieu->getVille();
+
+
+        return $this->render('sortie/detailSortie.html.twig', [
+            'sortie' => $sortie,
+            'ville' => $ville,
+
+
+
+
+        ]);
+    }
+
+    #[Route('/sortie/modifsortie/{id}', name: 'app_sortie_modif')]
+    public function editSortie(EntityManagerInterface $entityManager, Request $request)
+    {
+        $user = $this->getUser();
+        $sortie = $this->getUser();
+
+        $sortie = new Sortie();
+
+
+        if ($user instanceof Participant) {
+            $userCampus = $user->getCampus();
+            $sortie->setSiteOrganisateur($userCampus);
+            $sortie->setOrganisateur($user);
+
+        }
+        $form = $this->createForm(SortieType::class, $sortie, ['userCampus' => $userCampus]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+
+            $sortie = $form->getData();
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+            $this->addFlash('success', 'Sortie modifiée ! bien joué!!');
+            return $this->redirectToRoute('app_main');
+        }
+        return $this->render('sortie/modifSortie.html.twig', [
+            'form' => $form->createView(),
+            'sortie' => $sortie,
+        ]);
+
+    }
+
+
 }
