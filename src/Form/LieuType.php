@@ -26,25 +26,14 @@ class LieuType extends AbstractType
                 'choice_label' => 'nom'
             ])
             ->add('rue', TextType::class, [
-                'required' => false, 
+                'required' => true, 
             ])
             ->add('latitude', NumberType::class)
             ->add('longitude', NumberType::class)
             ->add('ville', VilleType::class);
         
        
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $lieu = $event->getData();
-            $form = $event->getForm();
-
-            if ($lieu instanceof Lieu) {
-                $rue = $lieu->getRue();
-                $form->add('rue', TextType::class, [
-                    'required' => false, 
-                    'data' => $rue,
-                ]);
-            }
-        });
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -19,7 +19,7 @@
             {{ form_start(form) }}
             <div class="space-y-12">
                 <div class="border-b border-gray-900/10 pb-6">
-                    <h1 class="text-base font-semibold leading-7 text-gray-900">Mon profil</h1>
+                    <h1 class="text-base font-semibold leading-7 text-gray-900">Créer une sortie</h1>
                 </div>
                 <div class="border-b border-gray-900/10 pb-6">
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="sm:col-span-3">
-                            <label for="{{ form.lieu.vars.id }}_ville_nom"
+                            <label for="{{ form.lieu.vars.id }}_ville-nom"
                                    class="block text-sm font-medium leading-6 text-gray-900">Ville : </label>
                             <div class="mt-2">
                                 {{ form_row(form.lieu.ville.nom, {'attr': {'class': 'form-field px-2 py-1 border rounded focus:outline-none focus:border-blue-500'}, 'label': false}) }}
@@ -144,17 +144,11 @@
             </div>
             <div class="mt-6 flex items-center justify-end gap-x-6">
                 <button type="reset" class="text-sm font-semibold leading-6 text-gray-900">Annuler</button>
-                <button type="submit"
-                        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    Publier la sortie
-                </button>
-                <button type="submit" 
-                        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    Enregistrer
-                </button>
+                {{ form_widget(form.post, {'attr': {'class': 'rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'}}) }}
+                {{ form_widget(form.save, {'attr': {'class': 'rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'}}) }}
             </div>
-{{ form_widget(form.save, {'attr': {'class': 'rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'}}) }}
-{{ form_widget(form.post, {'attr': {'class': 'rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'}}) }}
+
+
             {{ form_end(form) }}
 
 
@@ -162,35 +156,7 @@
 
 
     </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const nomInput = document.querySelector("#sortie_lieu_nom");
-        nomInput.addEventListener("change", function() {
-            const form = this.closest("form");
-            const formData = new FormData(form);
-            
-            fetch('{{ path('app_sortie_create') }}', {
-                method: form.getAttribute("method"),
-                body: formData,
-                headers:{
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "charset":"utf-8"
-                }
-            })
-            .then(response => response.text())
-            .then(html => {
-                let content = document.createElement("html");
-                content.innerHTML = html;
-                let nouveauSelect = content.querySelector("#sortie_lieu_rue");
-                document.querySelector("#sortie_lieu_rue").replaceWith(nouveauSelect)
-            })
-            .catch(error => {
-                // Gérez les erreurs ici
-                console.error(error);
-            });
-        });
-    });
-</script>
+
 
 {% endblock %}
 
