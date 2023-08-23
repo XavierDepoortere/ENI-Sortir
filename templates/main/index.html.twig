@@ -172,11 +172,17 @@
                 {% if sortie.etats.libelle == "Ouverte" and app.user.id == sortie.organisateur.id %}
                     <a href="{{ path('app_sortie_delete', { 'id':sortie.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Annuler</a>
                 {% endif %}
+                {% if sortie.etats.libelle == "Ouverte" and app.user.id != sortie.organisateur.id and app.user not in sortie.estInscrit %}
+                    <a href="{{ path('inscrire_sortie', { 'id': sortie.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">S'inscrire</a>
+                {% endif %}
+                {% if (sortie.etats.libelle == "Ouverte" or sortie.etats.libelle == "Clôturée") and app.user in sortie.estInscrit %}
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Se désister</a>
+                {% endif %}
                     
 
                     
                      
-                   <a href="{{ path('inscrire_sortie', { 'id':sortie.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">S'inscrit</a>
+                   
                     {# <a href="{{ path('app_profil_view', { 'id':sortie.organisateur.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Afficher</a>
                     <a href="{{ path('app_profil_view', { 'id':sortie.organisateur.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Afficher</a> #}
                 </td>
