@@ -66,11 +66,9 @@ class ParticipantController extends AbstractController
     public function view(?Participant $participant): Response
 
     {  
-        // Vérifier si le participant est null, c'est-à-dire que l'ID est invalide
         if (!$participant) {
             return $this->redirectToRoute('app_erreur');
         }
-
 return $this->render('participant/profil.html.twig', [
     'participant' => $participant,
 ]);
