@@ -13,9 +13,6 @@
 {% block body %}
 
     <div class="mt-5 container flex justify-center">
-
-
-
             <div class="space-y-12">
                 <div class="border-b border-gray-900/10 pb-6">
                     <h1 class="text-base font-semibold leading-7 text-gray-900">Ma sortie</h1>
@@ -26,90 +23,47 @@
                         <div class="sm:col-span-3">
                             <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Nom de la sortie : </span>{{ sortie.nom | capitalize }}</div>
                         </div>
-
-
-
-
                             <div class="sm:col-span-3">
                                 <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Campus :  </span>{{ sortie.siteOrganisateur.nom | capitalize }}</div>
                             </div>
-
-
-
-
                             <div class="sm:col-span-3">
                                 <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Heure de début : </span>{{ sortie.dateHeureDebut | date('d/m/Y H:i') }}</div>
                             </div>
-
-
-
                         <div class="sm:col-span-3">
                             <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Lieu : </span>{{ sortie.lieu.nom | capitalize }}</div>
                         </div>
-
-
                         <div class="sm:col-span-3">
                             <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Date limite d'inscription : </span>{{ sortie.dateLimiteInscription | date('d/m/Y') }}</div>
                         </div>
-
-
                         <div class="sm:col-span-3">
                             <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Rue : </span>{{ sortie.lieu.rue | capitalize }}</div>
                         </div>
-
                         <div class="sm:col-span-3">
                             <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Nombre de places : </span>{{ sortie.nbInscriptionsMax | capitalize }}</div>
                         </div>
-
-
-
-
-
                             <div class="sm:col-span-3">
                                 <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Durée : </span>{{ sortie.duree  }} Minutes </div>
                             </div>
-
-
                     <div class="sm:col-span-3">
                         <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Latitude : </span>{{ sortie.lieu.latitude  }}  </div>
                     </div>
-
-
-
-
                         <div class="sm:col-span-3">
                             <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Longitude : </span>{{ sortie.lieu.longitude  }}  </div>
                         </div>
-
-
                             <div class="sm:col-span-3">
                                 <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Description : </span>{{ sortie.infosSortie | capitalize }}  </div>
                             </div>
-
                      <div class="sm:col-span-3">
                             <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Ville : </span>{{ sortie.lieu.ville.nom | capitalize }}  </div>
                         </div>
-
                         <div class="sm:col-span-3">
                             <div class="block text-sm font-medium leading-6 text-gray-900"><span class="font-bold">Code postal : </span>{{ sortie.lieu.ville.codePostal  }}  </div>
                         </div>
-
-
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
-
-
-
-
-
     </div>
-
-
 {% endblock %}
 
 
