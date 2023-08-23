@@ -2,10 +2,10 @@
 
 namespace App\Form;
 
-
+use App\Entity\Lieu;
+use App\Form\LieuType;
 use App\Entity\Ville;
 use App\Entity\Sortie;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 
 
-class SortieType extends AbstractType
+class SortieModifType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -42,16 +42,17 @@ class SortieType extends AbstractType
             ->add('infosSortie', TextareaType::class)
             ->add('siteOrganisateur', TextType::class, [
                 'label' => 'Campus',
-                'attr' => ['class' => 'px-2 py-1 border rounded focus:outline-none focus:border-blue-500'],
-                'data' => $userCampus->getNom(),
-                'required' => true, 
-                'disabled'=> 'disabled',
+                'disabled' => 'disabled',
+
             ])
-            
-            ->add('lieu', LieuType::class)
+
+           ->add('lieu', EntityType::class, [
+               'class' => Lieu::class
+           ])
+
             ->add('save', SubmitType::class, [
-                'label'=> 'Enregistrer',
-            ])
+               'label'=> 'Enregistrer',
+           ])
             ->add('post', SubmitType::class, [
                 'label'=> 'Publier la sortie',
             ])
