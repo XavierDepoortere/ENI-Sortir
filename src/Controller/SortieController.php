@@ -106,4 +106,24 @@ class SortieController extends AbstractController
 
         }
 
+        #[Route('/sortie/delete/{id}', name: 'app_sortie_delete', methods: ['GET'])]
+
+
+
+        public
+        function delete(Sortie $sortie, EntityManagerInterface $entityManager, Request $request)
+        {
+
+
+            
+
+            return $this->render('sortie/deleteSortie.html.twig',
+
+                [
+
+                    'sortie' => $sortie,
+                ]);
+
+        }
+
     }
