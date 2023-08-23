@@ -176,7 +176,7 @@
                     <a href="{{ path('inscrire_sortie', { 'id': sortie.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">S'inscrire</a>
                 {% endif %}
                 {% if (sortie.etats.libelle == "Ouverte" or sortie.etats.libelle == "Clôturée") and app.user in sortie.estInscrit %}
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Se désister</a>
+                    <a href="{{ path('desistement_sortie', { 'id': sortie.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Se désister</a>
                 {% endif %}
                     
 

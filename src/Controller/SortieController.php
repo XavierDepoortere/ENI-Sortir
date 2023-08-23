@@ -98,6 +98,10 @@ class SortieController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
 
+
+
+
+
                 if ($form->get('save')->isClicked()) {
                     $etatCreee = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Créée']);
                     $sortie->setEtats($etatCreee);
@@ -107,7 +111,7 @@ class SortieController extends AbstractController
                     $sortie->setEtats($etatOuverte);
                 }
 
-                $entityManager->persist($sortie);
+
                 $entityManager->flush();
                 $this->addFlash('success', 'Sortie ajoutée ! bien joué!!');
                 return $this->redirectToRoute('app_main');

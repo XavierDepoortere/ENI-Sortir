@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Data\SearchData;
 use App\Entity\Participant;
@@ -25,6 +26,20 @@ class SortieRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Sortie::class);
         
+    }
+
+    public function searchByState(String $etat)
+    {
+        $query = $this->createQueryBuilder('s')
+
+            ->join('s.etats', 'e')
+            ->where('e.libelle = :etat')
+            ->setParameter('etat', $etat);
+
+        return $query->getQuery()->getResult();
+
+
+
     }
 
 //    /**

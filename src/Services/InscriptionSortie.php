@@ -22,11 +22,25 @@ class InscriptionSortie extends AbstractController
         $etat = $sortie->getEtats();
         $organisateur = $sortie->getOrganisateur();
 
-        if($nbInscrit < $nbInscritMax && $etat == "Ouverte" && $user != $organisateur){
+        if($nbInscrit < $nbInscritMax && $etat == "Ouverte" && $user !== $organisateur){
             if (!$sortie->getEstInscrit()->contains($user)) {
                 $sortie->addEstInscrit($user);
                 $this->entityManager->flush();
             }
        }
-    }   
+    }
+
+
+    public function desistement(Sortie $sortie) {
+        $user = $this->getUser();
+        $inscrit = $sortie->getEstInscrit();
+        $etat = $sortie->getEtats();
+
+
+        if($sortie->getEstInscrit()->contains($user) && $etat == "Ouverte" || $etat == "Clôturée") {
+            $sortie->removeEstInscrit($user);
+            $this->entityManager->flush();
+        }
+
+    }
 }
