@@ -170,7 +170,7 @@
                     <a href="{{ path('app_sortie_modif', { 'id': sortie.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
                 {% endif %}
                 {% if sortie.etats.libelle == "Ouverte" and app.user.id == sortie.organisateur.id %}
-                    <a href="{{ path('app_sortie_delete', { 'id':sortie.organisateur.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Annuler</a>
+                    <a href="{{ path('app_sortie_delete', { 'id':sortie.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Annuler</a>
                 {% endif %}
                     
 
