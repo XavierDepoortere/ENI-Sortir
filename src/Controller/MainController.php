@@ -22,7 +22,7 @@ class MainController extends AbstractController
 
 
 
-            $searchData->setCampus($user->getCampus());
+          
             $searchData->setUser($user);
 
         $form = $this->createForm(SearchForm::class, $searchData);

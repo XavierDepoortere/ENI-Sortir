@@ -164,7 +164,7 @@
                 <td class="px-6 py-4">
                 
                 {% if sortie.etats.libelle != "Créée" %}
-                    <a href="{{ path('app_sortie_modif', { 'id':sortie.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Afficher</a>
+                    <a href="{{ path('app_sortie_detail', { 'id':sortie.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Afficher</a>
                 {% endif %}
                 {% if sortie.etats.libelle == "Créée" and app.user.id == sortie.organisateur.id %}
                     <a href="{{ path('app_sortie_modif', { 'id': sortie.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
