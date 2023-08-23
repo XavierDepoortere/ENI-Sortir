@@ -67,7 +67,7 @@ class ParticipantController extends AbstractController
 
     {  
         if (!$participant) {
-            return $this->redirectToRoute('app_erreur');
+            throw new NotFoundHttpException('Ressource non trouvée');
         }
 return $this->render('participant/profil.html.twig', [
     'participant' => $participant,

@@ -38,13 +38,7 @@ class MainController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-    #[Route('/erreur_404', name: 'app_erreur')]
-    public function erreur()
-    {
-        return $this->render('security/404.html.twig');
-    }
-
-
+   
     // Appel du servie InscriptionSortie
     private $inscriptionService;
     private $gestionEtatService;
