@@ -23,14 +23,16 @@ class GestionEtatSortie extends AbstractController
 
     public function gestionEtat(SortieRepository $sortieRepository, Sortie $sortie, EntityManagerInterface $entityManager)
     {
-        $searchEtat = $sortieRepository->searchByState('Ouverte');
-        if ($searchEtat != null) {
-            foreach ($searchEtat as $sortie) {
+        $searchEtatOuvert = $sortieRepository->searchByState('Ouverte');
+        $searchEtatCloturee = $sortieRepository->searchByState('Cloturée');
+        if ($searchEtatOuvert != null) {
+            foreach ($searchEtatOuvert as $sortie) {
 
                 $nbInscrit = count($sortie->getEstInscrit());
                 $nbInscritMax = $sortie->getNbInscriptionsMax();
                 $currentDate = \DateTime::createFromFormat('d-m-Y H:i', date('d-m-Y H:i'));
                 $dateFin = $sortie->getDateLimiteInscription();
+
 
 
                 if ($nbInscrit == $nbInscritMax || $currentDate > $dateFin) {
@@ -39,13 +41,27 @@ class GestionEtatSortie extends AbstractController
                     if ($nouvelEtat) {
                         $sortie->setEtats($nouvelEtat);
                         $entityManager->flush();
-                        $this->addFlash('success', 'L\'état de la sortie a été mis à jour.');
-
 
                     }
                 }
             }
+        }
+        if($searchEtatCloturee != null){
+            foreach ($searchEtatCloturee as $sortie){
+                $nbInscrit = count($sortie->getEstInscrit());
+                $nbInscritMax = $sortie->getNbInscriptionsMax();
 
+                if ($nbInscrit < $nbInscritMax){
+                    $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
+                    if ($nouvelEtat) {
+                        $sortie->setEtats($nouvelEtat);
+                        $entityManager->flush();
+
+                    }
+                }
+            }
         }
     }
+
+
 }
