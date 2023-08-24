@@ -31,13 +31,20 @@ class GestionEtatSortie extends AbstractController
 
         //Historise toutes les sorties de plus d'un mois
         foreach ($searchAllData as $sortie) {
+
             $dateDebut = $sortie->getDateHeureDebut();
             $duree = $sortie->getDuree();
             $unMois = 43200;
             $nouvelleDuree = $duree + $unMois;
+            $dateFinActivite = clone $dateDebut;
             $dateFinAdd = clone $dateDebut;
+            $dateFinActivite->add(new \DateInterval("PT{$duree}M"));
             $dateFinAdd->add(new \DateInterval("PT{$nouvelleDuree}M"));
-            
+            if($currentDate > $dateFinActivite && $currentDate < $dateFinAdd){
+                $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Passée']);
+            $sortie->setEtats($nouvelEtat);
+            $entityManager->flush();
+            }
            if ($currentDate >= $dateFinAdd){
             
             $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Historisée']);
@@ -48,32 +55,30 @@ class GestionEtatSortie extends AbstractController
         //Toutes les sorties en cours        
             if ($searchEtatOuvert != null) {
                 foreach ($searchEtatOuvert as $sortie) {
-                    $dateDebut3 = $sortie->getDateHeureDebut();
-                    $duree = $sortie->getDuree(); 
-                    $dateFinEnCours = clone $dateDebut3;
-                    $dateFinEnCours->add(new \DateInterval("PT{$duree}M"));
-
-                    if ($currentDate >= $dateDebut3 && $currentDate <= $dateFinEnCours) {
-                        $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Activité en cours']);
-                        $sortie->setEtats($nouvelEtat);
-                        $entityManager->flush();
-                        }
-
+                    
                 //Gestion des états sorties clôturées
 
                         $dateDebut2 = $sortie->getDateHeureDebut();
-                        $duree = $sortie->getDuree(); 
-                        $dateFin = clone $dateDebut2;
-                        $dateFin->add(new \DateInterval("PT{$duree}M"));
                         $nbInscrit = count($sortie->getEstInscrit());
                         $nbInscritMax = $sortie->getNbInscriptionsMax();
-                        $dateFin = $sortie->getDateLimiteInscription();
+                        $dateFinLimiteInscription = $sortie->getDateLimiteInscription();
 
-                    if ($nbInscrit == $nbInscritMax || $currentDate > $dateFin) {
+                    if ($nbInscrit == $nbInscritMax || $currentDate > $dateFinLimiteInscription && $currentDate < $dateDebut2) {
                         $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Clôturée']);
                         $sortie->setEtats($nouvelEtat);
                         $entityManager->flush();
                     }
+
+                    $dateDebut3 = $sortie->getDateHeureDebut();
+                    $duree = $sortie->getDuree(); 
+                    $dateFinEnCours = clone $dateDebut3;
+                    $dateFinActivite = $dateFinEnCours->add(new \DateInterval("PT{$duree}M"));
+
+                    if ($currentDate >= $dateDebut3 && $currentDate <= $dateFinActivite) {
+                        $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Activité en cours']);
+                        $sortie->setEtats($nouvelEtat);
+                        $entityManager->flush();
+                        }
             //Repasser les sorties en Ouverte si désistement
 
                     if ($searchEtatCloturee != null) {
