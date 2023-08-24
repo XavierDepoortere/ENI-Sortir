@@ -158,7 +158,7 @@ class SortieRepository extends ServiceEntityRepository
                ->setParameter('user', $search->user);
        }elseif ($search->nonInscrit) {
            $query = $query
-               ->andWhere('s NOT IN (SELECT s2 FROM App\Entity\Sortie s2 JOIN s2.estInscrit i WHERE i = :user)')
+               ->andWhere('s NOT IN (SELECT s2 FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
                ->setParameter('user', $search->user);
        }
         if ($search->sortiePassee) {

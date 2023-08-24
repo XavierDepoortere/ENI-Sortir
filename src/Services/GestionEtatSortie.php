@@ -25,6 +25,14 @@ class GestionEtatSortie extends AbstractController
     {
         $searchEtatOuvert = $sortieRepository->searchByState('Ouverte');
         $searchEtatCloturee = $sortieRepository->searchByState('Cloturée');
+
+        // if ()
+
+
+        //TODO : passé
+        //TODO : historisé
+        
+
         if ($searchEtatOuvert != null) {
             foreach ($searchEtatOuvert as $sortie) {
 
@@ -33,6 +41,7 @@ class GestionEtatSortie extends AbstractController
                 $currentDate = \DateTime::createFromFormat('d-m-Y H:i', date('d-m-Y H:i'));
                 $dateFin = $sortie->getDateLimiteInscription();
 
+                //TODO : en cours
 
 
                 if ($nbInscrit == $nbInscritMax || $currentDate > $dateFin) {
@@ -44,14 +53,17 @@ class GestionEtatSortie extends AbstractController
 
                     }
                 }
+
             }
         }
         if($searchEtatCloturee != null){
             foreach ($searchEtatCloturee as $sortie){
                 $nbInscrit = count($sortie->getEstInscrit());
                 $nbInscritMax = $sortie->getNbInscriptionsMax();
+                $currentDate = \DateTime::createFromFormat('d-m-Y H:i', date('d-m-Y H:i'));
+                $dateFin = $sortie->getDateLimiteInscription();
 
-                if ($nbInscrit < $nbInscritMax){
+                if ($nbInscrit < $nbInscritMax && $currentDate <= $dateFin){
                     $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
                     if ($nouvelEtat) {
                         $sortie->setEtats($nouvelEtat);
@@ -62,6 +74,4 @@ class GestionEtatSortie extends AbstractController
             }
         }
     }
-
-
 }

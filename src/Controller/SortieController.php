@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\SortieAnnulationType;
+use App\Repository\ParticipantRepository;
 
 class SortieController extends AbstractController
 {
@@ -50,19 +51,18 @@ class SortieController extends AbstractController
     }
 
     #[Route('/sortie/detail/{id}', name: 'app_sortie_detail')]
-    public function detailSortie(Sortie $sortie, SortieRepository $sortieRepository, ): Response
+    public function detailSortie(Sortie $sortie, SortieRepository $sortieRepository, ParticipantRepository $participantRepository): Response
     {
-
-
-
+        $listeparticipant = $participantRepository->findAll();
+        
         $lieu = $sortie->getLieu();
         $ville = $lieu->getVille();
-
+        
 
         return $this->render('sortie/detailSortie.html.twig', [
             'sortie' => $sortie,
             'ville' => $ville,
-
+            'listeparticipant' => $listeparticipant,
 
         ]);
     }
@@ -124,6 +124,22 @@ class SortieController extends AbstractController
         
     ]);
         }
+        #[Route('/sortie/publier/{id}', name: 'app_sortie_publier')]
+    public function publier(EntityManagerInterface $entityManager, Request $request, Sortie $sortie, SortieRepository $sortieRepository)
+    {
+        
+        // $form = $this->createForm($sortie);
+        // $form->handleRequest($request);
+        // if ($form->isSubmitted() && $form->isValid()) {
+            
 
+            $etat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
+            $sortie->setEtats($etat);
+            // $entityManager->persist($sortie);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_main');
+        }
+        
+}
 
-    }
+    
