@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Repository\SortieRepository;
+use DateInterval;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,52 +27,74 @@ class GestionEtatSortie extends AbstractController
         $searchEtatOuvert = $sortieRepository->searchByState('Ouverte');
         $searchEtatCloturee = $sortieRepository->searchByState('Cloturée');
 
-        // if ()
-
-
         //TODO : passé
-        //TODO : historisé
-        
+        $searchAllData = $sortieRepository->findAll();
 
-        if ($searchEtatOuvert != null) {
-            foreach ($searchEtatOuvert as $sortie) {
+        foreach ($searchAllData as $sortie) {
+            $currentDate = \DateTime::createFromFormat('d-m-Y H:i', date('d-m-Y H:i'));
+            $dateDebut = $sortie->getDateHeureDebut();
+            $duree = $sortie->getDuree();
+            $unMois = 43200;
+            $nouvelleDuree = $duree + $unMois;
 
-                $nbInscrit = count($sortie->getEstInscrit());
-                $nbInscritMax = $sortie->getNbInscriptionsMax();
-                $currentDate = \DateTime::createFromFormat('d-m-Y H:i', date('d-m-Y H:i'));
-                $dateFin = $sortie->getDateLimiteInscription();
+            $dateFin = clone $dateDebut;
 
-                //TODO : en cours
+            $dateFin->add(new \DateInterval("PT{$nouvelleDuree}M"));
+
+           if ($currentDate >= $dateFin){
+               $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Historisée']);
+               if ($nouvelEtat) {
+                   $sortie->setEtats($nouvelEtat);
+                   $entityManager->flush();
+
+               }
+           }
+
+        }
 
 
-                if ($nbInscrit == $nbInscritMax || $currentDate > $dateFin) {
+            if ($searchEtatOuvert != null) {
+                foreach ($searchEtatOuvert as $sortie) {
 
-                    $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Clôturée']);
-                    if ($nouvelEtat) {
-                        $sortie->setEtats($nouvelEtat);
-                        $entityManager->flush();
+                    $nbInscrit = count($sortie->getEstInscrit());
+                    $nbInscritMax = $sortie->getNbInscriptionsMax();
+                    $currentDate = \DateTime::createFromFormat('d-m-Y H:i', date('d-m-Y H:i'));
+                    $dateFin = $sortie->getDateLimiteInscription();
 
+                    //TODO : en cours
+
+
+                    if ($nbInscrit == $nbInscritMax || $currentDate > $dateFin) {
+
+                        $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Clôturée']);
+                        if ($nouvelEtat) {
+                            $sortie->setEtats($nouvelEtat);
+                            $entityManager->flush();
+
+                        }
+                    }
+
+                }
+            }
+
+            if ($searchEtatCloturee != null) {
+                foreach ($searchEtatCloturee as $sortie) {
+                    $nbInscrit = count($sortie->getEstInscrit());
+                    $nbInscritMax = $sortie->getNbInscriptionsMax();
+                    $currentDate = \DateTime::createFromFormat('d-m-Y H:i', date('d-m-Y H:i'));
+                    $dateFin = $sortie->getDateLimiteInscription();
+
+                    if ($nbInscrit < $nbInscritMax && $currentDate <= $dateFin) {
+                        $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
+                        if ($nouvelEtat) {
+                            $sortie->setEtats($nouvelEtat);
+                            $entityManager->flush();
+
+                        }
                     }
                 }
-
             }
         }
-        if($searchEtatCloturee != null){
-            foreach ($searchEtatCloturee as $sortie){
-                $nbInscrit = count($sortie->getEstInscrit());
-                $nbInscritMax = $sortie->getNbInscriptionsMax();
-                $currentDate = \DateTime::createFromFormat('d-m-Y H:i', date('d-m-Y H:i'));
-                $dateFin = $sortie->getDateLimiteInscription();
 
-                if ($nbInscrit < $nbInscritMax && $currentDate <= $dateFin){
-                    $nouvelEtat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
-                    if ($nouvelEtat) {
-                        $sortie->setEtats($nouvelEtat);
-                        $entityManager->flush();
 
-                    }
-                }
-            }
-        }
-    }
 }
