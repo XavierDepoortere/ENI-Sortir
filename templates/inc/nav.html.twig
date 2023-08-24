@@ -31,7 +31,7 @@
           <div class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"  id="user-menu">
             <!-- Active: "bg-gray-100", Not Active: "" -->
             <span class="block px-4 py-2 text-sm text-gray-700">{{ app.user.prenom|capitalize}} {{ app.user.nom|slice(0, 1)|upper }}</span>
-            <span class="block px-4 py-2 text-sm text-gray-700">{{"now" | date("d/m/Y")}}</span>
+            <span class="block px-4 py-2 text-sm text-gray-700">{{"now" | date("d/m/Y H:i")}}</span>
             <a href="{{ path('app_profil') }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Mon profil</a>
             <a href="{{ path('app_logout')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Se déconnecter</a>
           </div>
