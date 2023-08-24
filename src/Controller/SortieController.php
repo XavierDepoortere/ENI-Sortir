@@ -50,13 +50,20 @@ class SortieController extends AbstractController
     }
 
     #[Route('/sortie/detail/{id}', name: 'app_sortie_detail')]
-    public function detailSortie(Sortie $sortie): Response
+    public function detailSortie(Sortie $sortie, SortieRepository $sortieRepository, ): Response
     {
+
+
+
         $lieu = $sortie->getLieu();
         $ville = $lieu->getVille();
+
+
         return $this->render('sortie/detailSortie.html.twig', [
             'sortie' => $sortie,
             'ville' => $ville,
+
+
         ]);
     }
 
@@ -117,5 +124,6 @@ class SortieController extends AbstractController
         
     ]);
         }
+
 
     }
