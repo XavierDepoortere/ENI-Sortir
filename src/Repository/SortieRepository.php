@@ -38,37 +38,7 @@ class SortieRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
 
-
-
     }
-
-
-
-
-//    /**
-//     * @return Sortie[] Returns an array of Sortie objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Sortie
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 
     /**
      * recupere les sorties en lien avec une recherche
@@ -76,7 +46,6 @@ class SortieRepository extends ServiceEntityRepository
      */
     public function findSearch(SearchData $search): array
     {
-
         
         
         $query = $this->createQueryBuilder('s')
@@ -107,66 +76,47 @@ class SortieRepository extends ServiceEntityRepository
             ->andWhere('s.dateHeureDebut <= :dateMax')
             ->setParameter('dateMax', $search->dateMax);
         }
-
-
-        // Fonctionne individuellement, mais pas combinées entre elles...
-        // if ($search->inscrit){
-        //     $query->andWhere(':user MEMBER OF s.estInscrit ')
-        //         ->setParameter('user', $search->user);
-        // }
-        // if ($search->nonInscrit){
-        //     $query->andWhere(':user NOT MEMBER OF s.estInscrit ')
-        //         ->setParameter('user', $search->user);
-        // }
-        // if ($search->organisateur) {
-        //     $query->andWhere(':user = s.organisateur')
-        //     ->setParameter('user', $search->user);
-        //     }
-
         
-        
-       if ($search->inscrit && $search->organisateur && $search->nonInscrit) {
-           $query = $query
-               ->andWhere('i.id IN (:user) OR o.id IN (:user) OR s NOT IN (SELECT s2
-               FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
-               ->setParameter('user', $search->user);
+        if ($search->inscrit && $search->organisateur && $search->nonInscrit) {
+            $query = $query
+                ->andWhere('i.id IN (:user) OR o.id IN (:user) OR s NOT IN (SELECT s2
+                FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
+                ->setParameter('user', $search->user);
 
-       }elseif ($search->organisateur && $search->nonInscrit) {
-           $query = $query
-               ->andWhere('o.id IN (:user) OR s NOT IN (SELECT s2
-               FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
-               ->setParameter('user', $search->user);
+        }elseif ($search->organisateur && $search->nonInscrit) {
+            $query = $query
+                ->andWhere('o.id IN (:user) OR s NOT IN (SELECT s2
+                FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
+                ->setParameter('user', $search->user);
 
-       }elseif ($search->inscrit && $search->nonInscrit) {
-           $query = $query
-               ->andWhere('i.id IN (:user) OR s NOT IN (SELECT s2
-               FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
-               ->setParameter('user', $search->user);
+        }elseif ($search->inscrit && $search->nonInscrit) {
+            $query = $query
+                ->andWhere('i.id IN (:user) OR s NOT IN (SELECT s2
+                FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
+                ->setParameter('user', $search->user);
 
-       }elseif ($search->inscrit && $search->organisateur) {
-           $query = $query
-               ->andWhere('i.id IN (:user) OR o.id IN (:user)')
-               ->setParameter('user', $search->user);
+        }elseif ($search->inscrit && $search->organisateur) {
+            $query = $query
+                ->andWhere('i.id IN (:user) OR o.id IN (:user)')
+                ->setParameter('user', $search->user);
 
-       } elseif ($search->inscrit) {
-           $query = $query
-               ->andWhere('i.id IN (:user)')
-               ->setParameter('user', $search->user);
-       } elseif ($search->organisateur) {
-           $query = $query
-               ->andWhere('o.id IN (:user)')
-               ->setParameter('user', $search->user);
-       }elseif ($search->nonInscrit) {
-           $query = $query
-               ->andWhere('s NOT IN (SELECT s2 FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
-               ->setParameter('user', $search->user);
-       }
+        } elseif ($search->inscrit) {
+            $query = $query
+                ->andWhere('i.id IN (:user)')
+                ->setParameter('user', $search->user);
+        } elseif ($search->organisateur) {
+            $query = $query
+                ->andWhere('o.id IN (:user)')
+                ->setParameter('user', $search->user);
+        }elseif ($search->nonInscrit) {
+            $query = $query
+                ->andWhere('s NOT IN (SELECT s2 FROM App\Entity\Sortie s2 JOIN s2.estInscrit i2 WHERE i2 = :user)')
+                ->setParameter('user', $search->user);
+        }
         if ($search->sortiePassee) {
             $query = $query
             ->andWhere('Date_add(s.dateHeureDebut, s.duree, \'MINUTE\') < CURRENT_TIMESTAMP()');
-
         }
-    
         return $query->getQuery()->getResult();
     }
 }
