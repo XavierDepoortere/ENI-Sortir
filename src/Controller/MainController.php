@@ -7,11 +7,12 @@ use App\Data\SearchData;
 use App\Form\SearchForm;
 use App\Entity\Participant;
 use App\Services\GestionEtatSortie;
+use App\Services\InscriptionSortie;
 use Doctrine\ORM\EntityManager;
-use App\Service\InscriptionSortie;
+
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Service\InscriptionSortieService;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,15 +41,15 @@ class MainController extends AbstractController
     }
    
     // Appel du servie InscriptionSortie
-    private $inscriptionService;
-    private $gestionEtatService;
+    private InscriptionSortie $inscriptionService;
+    private GestionEtatSortie $gestionEtatService;
     public function __construct(InscriptionSortie $inscriptionService, GestionEtatSortie $gestionEtatService)
     {
         $this->inscriptionService = $inscriptionService;
         $this->gestionEtatService = $gestionEtatService;
     }
     #[Route("/inscrire-sortie/{id}", name: 'inscrire_sortie')]
-    public function inscrireSortie(Sortie $sortie)
+    public function inscrireSortie(Sortie $sortie) :  Response
     {
         $this->inscriptionService->inscription($sortie);
         return $this->redirectToRoute("app_main");
@@ -57,7 +58,7 @@ class MainController extends AbstractController
     }
 
     #[Route("/desistement-sortie/{id}", name: 'desistement_sortie')]
-    public function desistementSortie(Sortie $sortie)
+    public function desistementSortie(Sortie $sortie) : Response
     {
         $this->inscriptionService->desistement($sortie);
         return $this->redirectToRoute("app_main");

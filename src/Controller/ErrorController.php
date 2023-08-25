@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class ErrorController extends AbstractController
 {
-    public function showException(Request $request, HttpExceptionInterface $exception)
+    public function showException(Request $request, HttpExceptionInterface $exception) : Response
     {
         $statusCode = $exception->getStatusCode();
 

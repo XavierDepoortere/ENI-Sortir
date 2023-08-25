@@ -12,13 +12,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GestionEtatSortie extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
+
 
     public function __construct(EntityManagerInterface $entityManager, Sortie $sortie, Etat $etat)
     {
         $this->entityManager = $entityManager;
     }
-    public function gestionEtat(SortieRepository $sortieRepository, Sortie $sortie, EntityManagerInterface $entityManager)
+    public function gestionEtat(SortieRepository $sortieRepository, Sortie $sortie, EntityManagerInterface $entityManager) : void
     {
         $searchEtatOuvert = $sortieRepository->searchByState('Ouverte');
         $searchEtatCloturee = $sortieRepository->searchByState('Cloturée');
@@ -50,7 +50,7 @@ class GestionEtatSortie extends AbstractController
 
         //Toutes les sorties en cours        
             if ($searchEtatOuvert != null) {
-                foreach ($searchEtatOuvert as $sortie) {           
+                foreach ($searchEtatOuvert as $sortie) {
                 //Gestion des états sorties clôturées
                         $dateDebut2 = $sortie->getDateHeureDebut();
                         $nbInscrit = count($sortie->getEstInscrit());

@@ -1,5 +1,5 @@
 <?php
-namespace App\Service;
+namespace App\Services;
 
 use App\Entity\Sortie;
 use Doctrine\ORM\EntityManager;
@@ -29,8 +29,6 @@ class InscriptionSortie extends AbstractController
             }
        }
     }
-
-
     public function desistement(Sortie $sortie) {
         $user = $this->getUser();
         $inscrit = $sortie->getEstInscrit();
@@ -41,6 +39,5 @@ class InscriptionSortie extends AbstractController
             $sortie->removeEstInscrit($user);
             $this->entityManager->flush();
         }
-
     }
 }
