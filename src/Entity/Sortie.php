@@ -58,7 +58,7 @@ class Sortie
     private ?Etat $etats = null;
 
     #[ORM\ManyToOne(targetEntity:Lieu::class, inversedBy:"sorties", cascade:['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name:"lieu_id", referencedColumnName:"id")]
     private ?Lieu $lieu = null;
 
     #[ORM\ManyToMany(targetEntity: Participant::class, inversedBy: 'sorties')]

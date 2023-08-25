@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Lieu;
 use App\Entity\Ville;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,20 +16,11 @@ class VilleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('nom', EntityType::class, [
-            'class' => Ville::class,
-            'choice_label' => 'nom'
-        ])
+        ->add('nom', TextType::class)
 
             ->add('codePostal', TextType::class, [
-                'constraints' => [
-                    new Length([
-                        'min' => 5,
-                        'max' => 5,
-                        'minMessage' => 'Le code postal doit avoir exactement {{ limit }} caractères.',
-                        'maxMessage' => 'Le code postal doit avoir exactement {{ limit }} caractères.',
-                    ]),
-                ],
+                'disabled'=> 'disabled',
+                'mapped' => false,
             ]);
         ;
     }

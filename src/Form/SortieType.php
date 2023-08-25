@@ -2,10 +2,12 @@
 
 namespace App\Form;
 
-
+use App\Entity\Lieu;
 use App\Entity\Ville;
 use App\Entity\Sortie;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -47,8 +49,37 @@ class SortieType extends AbstractType
                 'required' => true, 
                 'disabled'=> 'disabled',
             ])
+
+            ->add('lieu', EntityType::class, [
+               
+                'class'=>Lieu::class,
+                'choice_label'=>'nom',
+                'placeholder'=>'Sélectionner un lieu',
+                
+                
+            ])
+            ->add('rue', TextType::class, [
+                'mapped'=>false, 
+            ])
+            ->add('codePostal', TextType::class, [
+                'mapped'=>false, 
+            ])
+            ->add('latitude', TextType::class, [
+                'mapped'=>false, 
+            ])
+            ->add('longitude', TextType::class, [
+                'mapped'=>false, 
+            ])
             
-            ->add('lieu', LieuType::class)
+            ->add('ville', EntityType::class, [
+                'mapped'=>false, 
+                'class'=>Ville::class,
+                'choice_label'=>'nom',
+                'placeholder'=>'Sélectionner une ville',
+                'choice_value'=> 'nom',
+                
+            ])
+            
             ->add('save', SubmitType::class, [
                 'label'=> 'Enregistrer',
             ])

@@ -2,19 +2,23 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Etat;
+use App\Entity\Lieu;
+use App\Entity\Ville;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Entity\Participant;
+use App\Form\SortieAnnulationType;
+use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ParticipantRepository;
+use App\Repository\VilleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Form\SortieAnnulationType;
-use App\Repository\ParticipantRepository;
 
 class SortieController extends AbstractController
 {
@@ -40,6 +44,7 @@ class SortieController extends AbstractController
                 $etatOuverte = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
                 $sortie->setEtats($etatOuverte);
             }
+          
             $entityManager->persist($sortie);
             $entityManager->flush();
             $this->addFlash('success', 'Sortie ajoutée ! bien joué!!');
@@ -68,7 +73,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/sortie/modifsortie/{id}', name: 'app_sortie_modif')]
-        public function editSortie(Sortie $sortie, EntityManagerInterface $entityManager, Request $request, SortieRepository $sortieRepository)
+        public function editSortie(Sortie $sortie,Ville $ville, EntityManagerInterface $entityManager, Request $request)
         {
             $user = $this->getUser();
             $sortie = new Sortie();
@@ -100,7 +105,7 @@ class SortieController extends AbstractController
 
         #[Route('/sortie/annuler/{id}', name: 'app_sortie_annuler', methods: ['GET', 'POST'])]
         public function annulerSortie(Request $request, EntityManagerInterface $entityManager, int $id): Response
-{
+    {
     $sortie = $entityManager->find(Sortie::class, $id);
     if (!$sortie) {
         throw $this->createNotFoundException('Sortie non trouvée');
@@ -139,7 +144,49 @@ class SortieController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_main');
         }
+
+        #[Route('/get-rue-by-lieu/{lieu}', name: 'get_rue_by_lieu', methods: ['GET'])]
+        public function getRueByLieu(Lieu $lieu ): JsonResponse
+        {
+    $rue = $lieu->getRue();
+    $longitude = $lieu->getLongitude();
+    $latitude = $lieu->getLatitude();
+   
+    
+    return new JsonResponse([
+        'rue' => $rue,
+        'longitude' => $longitude,
+        'latitude' => $latitude,
         
+    ]);
+    }
+        #[Route('/get-cp-by-ville/{ville}', name: 'get_cp_by_ville', methods: ['GET'])]
+        public function getRueByVille(Ville $ville, LieuRepository $lieuRepository ): JsonResponse
+    {
+    $lieux = $lieuRepository->findBy(['ville' => $ville]);
+    $nom = $ville->getNom();
+    $codePostal = $ville->getCodePostal();
+    $villeId = $ville->getId();
+    $lieuxData = [];
+    foreach ($lieux as $lieu) 
+    {
+        $lieuxData[] = 
+        [
+            'id' => $lieu->getId(),
+            'nom' => $lieu->getNom(),
+        ];
+    }
+    return new JsonResponse(
+    [
+        'lieu' => $lieuxData,
+        'nom' => $nom,
+        'codePostal' => $codePostal,
+        'villeId' => $villeId,
+    ]);
+    }
 }
 
-    
+
+
+        
+  
