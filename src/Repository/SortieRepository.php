@@ -118,5 +118,6 @@ class SortieRepository extends ServiceEntityRepository
             ->andWhere('Date_add(s.dateHeureDebut, s.duree, \'MINUTE\') < CURRENT_TIMESTAMP()');
         }
         return $query->getQuery()->getResult();
+
     }
 }
